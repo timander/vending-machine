@@ -1,5 +1,6 @@
 package net.timandersen;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,5 +19,10 @@ public class VendingMachine {
 
     public int getQuantityFor(String productCode) {
         return inventory.get(productCode);
+    }
+
+    public Double acceptPayment(Product product, Double payment) {
+        double change = payment.doubleValue() - product.getPrice().doubleValue();
+        return change;
     }
 }
