@@ -1,7 +1,8 @@
 package net.timandersen;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VendingMachine {
@@ -22,7 +23,19 @@ public class VendingMachine {
     }
 
     public Double acceptPayment(Product product, Double payment) {
-        double change = payment.doubleValue() - product.getPrice().doubleValue();
-        return change;
+        return payment - product.getPrice();
+    }
+
+    public List<String> notifyOperator() {
+        List<String> warnings = new ArrayList<String>();
+        for (Map.Entry<String, Integer> item : inventory.entrySet()) {
+            if (item.getValue() <= 5 && item.getValue() > 0) {
+                warnings.add("The vending machine only has " + item.getValue() + " Snickers left");
+            }
+            if (item.getValue() == 0) {
+                warnings.add("The vending machine out of M&Ms");
+            }
+        }
+        return warnings;
     }
 }

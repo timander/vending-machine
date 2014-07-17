@@ -1,19 +1,29 @@
 package net.timandersen;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class VendingMachineTest {
 
 
-    @org.junit.Test
+    private VendingMachine vendingMachine;
+    private Product snickers;
+    private Product mms;
+
+
+    @Before
+    public void setUp() {
+        vendingMachine = new VendingMachine();
+        snickers = new Product("A1", "Snickers", 0.75);
+        mms = new Product("A2", "M&Ms", 0.65);
+    }
+
+    @Test
     public void trackProductQuantity() {
-        VendingMachine vendingMachine = new VendingMachine();
-
-        Product snickers = new Product("A1", "Snickers", 0.75);
-        Product mms = new Product("A2", "M&Ms", 0.65);
-
         vendingMachine.addProducts(snickers, 20);
         vendingMachine.addProducts(mms, 15);
 
@@ -26,9 +36,32 @@ public class VendingMachineTest {
 
     @Test
     public void makeChangeForOverPayment() {
-        VendingMachine vendingMachine = new VendingMachine();
         Double change = vendingMachine.acceptPayment(new Product("A1", "Snickers", 0.75), 1.00);
         assertEquals(new Double(0.25), change);
     }
+
+    @Test
+    public void zeroChangeForExactPayment() {
+        Double change = vendingMachine.acceptPayment(new Product("A1", "Snickers", 0.75), 0.75);
+        assertEquals(new Double(0.0), change);
+    }
+
+    @Test
+    public void calculateRemainingBalanceForUnderPayment() {
+        Double change = vendingMachine.acceptPayment(new Product("A1", "Snickers", 0.75), 0.25);
+        assertEquals(new Double(-0.50), change);
+    }
+
+
+    @Test
+    public void notifyOperatorWhenInventoryForProductIsFiveOrLess() {
+        vendingMachine.addProducts(snickers, 5);
+        vendingMachine.addProducts(mms, 0);
+        List<String> warnings = vendingMachine.notifyOperator();
+        assertEquals(2, warnings.size());
+        assertEquals("The vending machine out of M&Ms", warnings.get(0));
+        assertEquals("The vending machine only has 5 Snickers left", warnings.get(1));
+    }
+
 
 }
