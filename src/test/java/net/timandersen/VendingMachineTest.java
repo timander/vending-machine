@@ -71,4 +71,13 @@ public class VendingMachineTest {
     assertEquals("$0.50", vendingMachine.showCredit());
   }
 
+  @Test
+  public void trackMoney() {
+    vendingMachine.setCashAmount(10.00);
+    vendingMachine.addProducts(snickers, 20);
+    vendingMachine.acceptMoney(1.00);
+    vendingMachine.chooseProduct(snickers);
+    assertEquals(new Double(10.75), vendingMachine.getCashAmount());
+  }
+
 }
