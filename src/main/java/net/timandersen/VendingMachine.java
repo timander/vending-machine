@@ -26,18 +26,20 @@ public class VendingMachine {
     return "$" + String.format("%.2f", credit);
   }
 
-  public void chooseProduct(Product product) {
-    if (credit >= product.getPrice()) {
-      credit = credit - product.getPrice();
-      cashAmount += product.getPrice();
-      dispenseProduct(product.getCode());
+  public void purchase(Product product) {
+    if (getQuantityFor(product.getCode()) > 0) {
+      if (credit >= product.getPrice()) {
+        credit = credit - product.getPrice();
+        cashAmount += product.getPrice();
+        dispenseProduct(product.getCode());
+      }
     }
   }
 
   public Double ejectChange() {
     Double change = credit;
     credit = 0.0;
-    return change;
+    return new Double(String.format("%.2f", change));
   }
 
   public void setCashAmount(double cashAmount) {
@@ -47,4 +49,5 @@ public class VendingMachine {
   public Double getCashAmount() {
     return cashAmount;
   }
+
 }
