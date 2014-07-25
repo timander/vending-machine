@@ -26,12 +26,7 @@ public class VendingMachine {
   }
 
   public String showCredit() {
-    String amount = "$" + credit;
-    int decimalPosition = amount.indexOf(".");
-    if (amount.length() - decimalPosition == 2) {
-      amount = amount + "0";
-    }
-    return amount;
+    return "$" + String.format("%.2f", credit);
   }
 
   public void chooseProduct(Product product) {
