@@ -47,6 +47,7 @@ public class VendingMachineTest {
 
   @Test
   public void makeChangeForOverPayment() {
+    vendingMachine.addProducts(snickers, 20);
     vendingMachine.acceptMoney(1.00);
     vendingMachine.chooseProduct(snickers);
     Double change = vendingMachine.ejectChange();
@@ -55,9 +56,19 @@ public class VendingMachineTest {
 
   @Test
   public void chooseProductSubtractsFromCredit() {
+    vendingMachine.addProducts(snickers, 20);
     vendingMachine.acceptMoney(0.85);
     vendingMachine.chooseProduct(snickers);
     assertEquals("$0.10", vendingMachine.showCredit());
+  }
+
+  @Test
+  public void chooseProductNotEnoughCredit() {
+    vendingMachine.addProducts(snickers, 20);
+    vendingMachine.acceptMoney(0.50);
+    vendingMachine.chooseProduct(snickers);
+    assertEquals(20, vendingMachine.getQuantityFor(snickers.getCode()));
+    assertEquals("$0.50", vendingMachine.showCredit());
   }
 
 }

@@ -30,8 +30,10 @@ public class VendingMachine {
   }
 
   public void chooseProduct(Product product) {
-    credit = credit - product.getPrice();
-    inventory.remove(product.getCode());
+    if (credit >= product.getPrice()) {
+      credit = credit - product.getPrice();
+      dispenseProduct(product.getCode());
+    }
   }
 
   public Double ejectChange() {
