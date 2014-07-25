@@ -1,0 +1,19 @@
+Accept Money
+
+Display Credit
+
+Choose Product
+
+Dispense Product
+
+Eject Change
+
+Track Inventory
+
+Track Money
+
+Notify Operator
+
+Restock Inventory
+
+Cancel Purchase

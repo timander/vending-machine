@@ -1,41 +1,47 @@
 package net.timandersen;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class VendingMachine {
 
-    Map<String, Integer> inventory = new HashMap<String, Integer>();
+  Map<String, Integer> inventory = new HashMap<String, Integer>();
+  Double credit = 0.0;
 
-    public void releaseProduct(String productCode) {
-        Integer currentQuantity = getQuantityFor(productCode);
-        inventory.put(productCode, currentQuantity - 1);
-    }
+  public void dispenseProduct(String productCode) {
+    Integer currentQuantity = getQuantityFor(productCode);
+    inventory.put(productCode, currentQuantity - 1);
+  }
 
-    public void addProducts(Product product, int quantity) {
-        inventory.put(product.getCode(), quantity);
-    }
+  public void addProducts(Product product, int quantity) {
+    inventory.put(product.getCode(), quantity);
+  }
 
-    public int getQuantityFor(String productCode) {
-        return inventory.get(productCode);
-    }
+  public int getQuantityFor(String productCode) {
+    return inventory.get(productCode);
+  }
 
-    public Double acceptPayment(Product product, Double payment) {
-        return payment - product.getPrice();
-    }
+  public void acceptMoney(Double money) {
+    this.credit = money;
+  }
 
-    public List<String> notifyOperator() {
-        List<String> warnings = new ArrayList<String>();
-        for (Map.Entry<String, Integer> item : inventory.entrySet()) {
-            if (item.getValue() <= 5 && item.getValue() > 0) {
-                warnings.add("The vending machine only has " + item.getValue() + " Snickers left");
-            }
-            if (item.getValue() == 0) {
-                warnings.add("The vending machine out of M&Ms");
-            }
-        }
-        return warnings;
+  public String showCredit() {
+    String amount = "$" + credit;
+    int decimalPosition = amount.indexOf(".");
+    if (amount.length() - decimalPosition == 2) {
+      amount = amount + "0";
     }
+    return amount;
+  }
+
+  public void chooseProduct(Product product) {
+    credit = credit - product.getPrice();
+    inventory.remove(product.getCode());
+  }
+
+  public Double ejectChange() {
+    Double change = credit;
+    credit = 0.0;
+    return change;
+  }
 }
