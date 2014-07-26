@@ -31,4 +31,9 @@ public class Inventory {
       }
     }
   }
+
+  public Double getPriceFor(String code) {
+    return Product.findBy(code).getPrice();
+  }
+
 }

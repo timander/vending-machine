@@ -26,12 +26,13 @@ public class VendingMachine {
     return "$" + String.format("%.2f", credit);
   }
 
-  public void purchase(Product product) {
-    if (getQuantityFor(product.getCode()) > 0) {
-      if (credit >= product.getPrice()) {
-        credit = credit - product.getPrice();
-        cashAmount += product.getPrice();
-        dispenseProduct(product.getCode());
+  public void purchase(String code) {
+    if (getQuantityFor(code) > 0) {
+      Double price = inventory.getPriceFor(code);
+      if (credit >= price) {
+        credit = credit - price;
+        cashAmount += price;
+        dispenseProduct(code);
       }
     }
   }

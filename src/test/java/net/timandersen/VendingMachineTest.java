@@ -16,8 +16,8 @@ public class VendingMachineTest {
   @Before
   public void setUp() {
     vendingMachine = new VendingMachine();
-    snickers = new Product("A1", "Snickers", 0.75);
-    mms = new Product("A2", "M&Ms", 0.65);
+    snickers = Product.SNICKERS;
+    mms = Product.MMS;
   }
 
 
@@ -49,7 +49,7 @@ public class VendingMachineTest {
   public void makeChangeForOverPayment() {
     vendingMachine.addProducts(snickers, 20);
     vendingMachine.acceptMoney(1.00);
-    vendingMachine.purchase(snickers);
+    vendingMachine.purchase(snickers.getCode());
     Double change = vendingMachine.ejectChange();
     assertEquals(new Double(0.25), change);
   }
@@ -58,7 +58,7 @@ public class VendingMachineTest {
   public void purchaseSubtractsFromCredit() {
     vendingMachine.addProducts(snickers, 20);
     vendingMachine.acceptMoney(0.85);
-    vendingMachine.purchase(snickers);
+    vendingMachine.purchase(snickers.getCode());
     assertEquals("$0.10", vendingMachine.showCredit());
   }
 
@@ -66,7 +66,7 @@ public class VendingMachineTest {
   public void notEnoughCreditForPurchase() {
     vendingMachine.addProducts(snickers, 20);
     vendingMachine.acceptMoney(0.50);
-    vendingMachine.purchase(snickers);
+    vendingMachine.purchase(snickers.getCode());
     assertEquals(20, vendingMachine.getQuantityFor(snickers.getCode()));
     assertEquals("$0.50", vendingMachine.showCredit());
   }
@@ -76,7 +76,7 @@ public class VendingMachineTest {
     vendingMachine.setCashAmount(10.00);
     vendingMachine.addProducts(snickers, 20);
     vendingMachine.acceptMoney(1.00);
-    vendingMachine.purchase(snickers);
+    vendingMachine.purchase(snickers.getCode());
     assertEquals(new Double(10.75), vendingMachine.getCashAmount());
   }
 
@@ -92,8 +92,8 @@ public class VendingMachineTest {
     vendingMachine.addProducts(snickers, 0);
     vendingMachine.addProducts(mms, 3);
     vendingMachine.acceptMoney(0.75);
-    vendingMachine.purchase(snickers);
-    vendingMachine.purchase(mms);
+    vendingMachine.purchase(snickers.getCode());
+    vendingMachine.purchase(mms.getCode());
     assertEquals(new Double(0.10), vendingMachine.ejectChange());
     assertEquals(0, vendingMachine.getQuantityFor(snickers.getCode()));
     assertEquals(2, vendingMachine.getQuantityFor(mms.getCode()));
