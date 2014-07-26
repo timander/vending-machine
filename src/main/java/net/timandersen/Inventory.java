@@ -1,35 +1,22 @@
 package net.timandersen;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Inventory {
 
-  List<Product> stock = new ArrayList<Product>();
+  private Map<String, Integer> stock = new HashMap<String, Integer>();
 
   public void addProducts(Product product, int quantity) {
-    for (int i = 0; i < quantity; i++) {
-      stock.add(product);
-    }
+    stock.put(product.getCode(), quantity);
   }
 
   public int getQuantityFor(String code) {
-    int quantity = 0;
-    for (Product product : stock) {
-      if (product.getCode().equals(code)) {
-        quantity++;
-      }
-    }
-    return quantity;
+    return stock.get(code);
   }
 
   public void removeProduct(String code) {
-    for (Product product : stock) {
-      if (product.getCode().equals(code)) {
-        stock.remove(product);
-        break;
-      }
-    }
+    stock.put(code, getQuantityFor(code) - 1);
   }
 
   public Double getPriceFor(String code) {
