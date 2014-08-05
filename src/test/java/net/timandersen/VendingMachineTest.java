@@ -3,21 +3,18 @@ package net.timandersen;
 import org.junit.Before;
 import org.junit.Test;
 
+import static net.timandersen.Product.*;
 import static org.junit.Assert.assertEquals;
 
 public class VendingMachineTest {
 
 
   private VendingMachine vendingMachine;
-  private Product snickers;
-  private Product mms;
 
 
   @Before
   public void setUp() {
     vendingMachine = new VendingMachine();
-    snickers = Product.SNICKERS;
-    mms = Product.MMS;
   }
 
 
@@ -35,48 +32,48 @@ public class VendingMachineTest {
 
   @Test
   public void trackProductQuantity() {
-    vendingMachine.addProducts(snickers, 20);
-    vendingMachine.addProducts(mms, 15);
+    vendingMachine.addProducts(SNICKERS, 20);
+    vendingMachine.addProducts(MMS, 15);
 
-    vendingMachine.dispenseProduct(snickers.getCode());
-    vendingMachine.dispenseProduct(mms.getCode());
+    vendingMachine.dispenseProduct(SNICKERS.getCode());
+    vendingMachine.dispenseProduct(MMS.getCode());
 
-    assertEquals(19, vendingMachine.getQuantityFor(snickers.getCode()));
-    assertEquals(14, vendingMachine.getQuantityFor(mms.getCode()));
+    assertEquals(19, vendingMachine.getQuantityFor(SNICKERS.getCode()));
+    assertEquals(14, vendingMachine.getQuantityFor(MMS.getCode()));
   }
 
   @Test
   public void makeChangeForOverPayment() {
-    vendingMachine.addProducts(snickers, 20);
+    vendingMachine.addProducts(SNICKERS, 20);
     vendingMachine.acceptMoney(1.00);
-    vendingMachine.purchase(snickers.getCode());
+    vendingMachine.purchase(SNICKERS.getCode());
     Double change = vendingMachine.ejectChange();
     assertEquals(new Double(0.25), change);
   }
 
   @Test
   public void purchaseSubtractsFromCredit() {
-    vendingMachine.addProducts(snickers, 20);
+    vendingMachine.addProducts(SNICKERS, 20);
     vendingMachine.acceptMoney(0.85);
-    vendingMachine.purchase(snickers.getCode());
+    vendingMachine.purchase(SNICKERS.getCode());
     assertEquals("$0.10", vendingMachine.showCredit());
   }
 
   @Test
   public void notEnoughCreditForPurchase() {
-    vendingMachine.addProducts(snickers, 20);
+    vendingMachine.addProducts(SNICKERS, 20);
     vendingMachine.acceptMoney(0.50);
-    vendingMachine.purchase(snickers.getCode());
-    assertEquals(20, vendingMachine.getQuantityFor(snickers.getCode()));
+    vendingMachine.purchase(SNICKERS.getCode());
+    assertEquals(20, vendingMachine.getQuantityFor(SNICKERS.getCode()));
     assertEquals("$0.50", vendingMachine.showCredit());
   }
 
   @Test
   public void trackMoney() {
     vendingMachine.setCashAmount(10.00);
-    vendingMachine.addProducts(snickers, 20);
+    vendingMachine.addProducts(SNICKERS, 20);
     vendingMachine.acceptMoney(1.00);
-    vendingMachine.purchase(snickers.getCode());
+    vendingMachine.purchase(SNICKERS.getCode());
     assertEquals(new Double(10.75), vendingMachine.getCashAmount());
   }
 
@@ -89,14 +86,14 @@ public class VendingMachineTest {
 
   @Test
   public void purchaseItemNotInInventory() {
-    vendingMachine.addProducts(snickers, 0);
-    vendingMachine.addProducts(mms, 3);
+    vendingMachine.addProducts(SNICKERS, 0);
+    vendingMachine.addProducts(MMS, 3);
     vendingMachine.acceptMoney(0.75);
-    vendingMachine.purchase(snickers.getCode());
-    vendingMachine.purchase(mms.getCode());
+    vendingMachine.purchase(SNICKERS.getCode());
+    vendingMachine.purchase(MMS.getCode());
     assertEquals(new Double(0.10), vendingMachine.ejectChange());
-    assertEquals(0, vendingMachine.getQuantityFor(snickers.getCode()));
-    assertEquals(2, vendingMachine.getQuantityFor(mms.getCode()));
+    assertEquals(0, vendingMachine.getQuantityFor(SNICKERS.getCode()));
+    assertEquals(2, vendingMachine.getQuantityFor(MMS.getCode()));
   }
 
 }
